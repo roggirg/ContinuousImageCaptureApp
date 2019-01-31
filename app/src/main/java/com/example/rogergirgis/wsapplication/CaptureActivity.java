@@ -22,7 +22,7 @@ import com.example.rogergirgis.wsapplication.env.Logger;
 import java.io.File;
 import java.util.Vector;
 
-public class WSActivity extends CameraActivity implements OnImageAvailableListener {
+public class CaptureActivity extends CameraActivity implements OnImageAvailableListener {
 
     private static final Logger LOGGER = new Logger();
 
