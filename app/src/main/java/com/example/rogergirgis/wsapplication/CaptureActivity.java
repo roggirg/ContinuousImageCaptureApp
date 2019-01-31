@@ -26,15 +26,9 @@ public class CaptureActivity extends CameraActivity implements OnImageAvailableL
 
     private static final Logger LOGGER = new Logger();
 
-    protected static final boolean SAVE_PREVIEW_BITMAP = true;
-
-    private ResultsView resultsView;
-
     private Bitmap rgbFrameBitmap = null;
     private Bitmap croppedBitmap = null;
     private Bitmap cropCopyBitmap = null;
-
-    private long lastProcessingTimeMs;
 
     private BorderedText borderedText;
     private Integer sensorOrientation;
@@ -50,12 +44,10 @@ public class CaptureActivity extends CameraActivity implements OnImageAvailableL
     private static final int INPUT_SIZE = 224;
     private static final int IMAGE_MEAN = 117;
     private static final float IMAGE_STD = 1;
-
     private static final String INPUT_NAME = "input_1";
     private static final String OUTPUT_NAME = "loss/Softmax";
     private static final String MODEL_FILE = "file:///android_asset/Mobilenet_8.pb";
     private static final String LABEL_FILE = "file:///android_asset/classes.8.txt";
-    int mPrediction = 0;
 
     // Saving information
     public static final String FOLDER_KEY = "0";
@@ -64,6 +56,7 @@ public class CaptureActivity extends CameraActivity implements OnImageAvailableL
     int IMG_NUMBER = 0;
 
     Handler handler = new Handler();
+    int TIME_BETWEEN_CAPTURES_MS = 5000;  // in milliseconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,7 +130,7 @@ public class CaptureActivity extends CameraActivity implements OnImageAvailableL
                 IMG_NUMBER++;
             }
         };
-        handler.postDelayed(r, 400);
+        handler.postDelayed(r, TIME_BETWEEN_CAPTURES_MS);
     }
 
     @Override
@@ -222,8 +215,6 @@ public class CaptureActivity extends CameraActivity implements OnImageAvailableL
             lines.add("Crop: " + copy.getWidth() + "x" + copy.getHeight());
             lines.add("View: " + canvas.getWidth() + "x" + canvas.getHeight());
             lines.add("Rotation: " + sensorOrientation);
-            lines.add("Inference time: " + lastProcessingTimeMs + "ms");
-            lines.add("Aggr. Action: " + mPrediction);
 
             borderedText.drawLines(canvas, 10, canvas.getHeight() - 10, lines);
         }
